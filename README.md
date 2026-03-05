@@ -9,9 +9,9 @@ This repository contains the telemetry and tooling used to prove that specific B
 ---
 
 ## Executive Summary for BT/EE NOC
-* **The Fault:** Upstream BT/EE transit routers are silently dropping 1500-byte IPv6 packets without returning the mandatory `ICMPv6 Type 2 (Packet Too Big)` messages.
-* **The Impact:** Standard PMTUD fails. Large TCP streams (Docker pulls, AI model downloads, large API responses) hang indefinitely. Mobile/IoT devices suffer excessive battery drain.
-* **The Proof:** Raw wire taps confirm local hardware is correctly configured for Baby Jumbo Frames (RFC 4638) and packets leave the premises at 1500 bytes, but vanish completely at specific BT/EE-owned hops (e.g., within `2a00:2380::`).
+* **The Fault:** Upstream BT/EE transit routers are silently dropping IPv6 packets that exceed internal link MTUs without returning the mandatory `ICMPv6 Type 2 (Packet Too Big)` messages.
+* **The Impact:** Standard PMTUD fails. Large TCP streams (Docker pulls, AI model downloads, large API responses) hang indefinitely. Mobile/IoT devices suffer excessive battery drain. **This affects both standard 1492-byte PPPoE users and 1500-byte Baby Jumbo users equally.**
+* **The Proof:** Raw wire taps confirm local hardware is correctly configured, but packets vanish completely at specific BT/EE-owned hops (e.g., within `2a00:2380::`) without generating ICMPv6 rejection notices.
 
 ## The Problem: RFC 8200 Non-Compliance
 
@@ -21,19 +21,19 @@ Modern dual-stack and IPv6-only environments rely on **Path MTU Discovery (PMTUD
 
 **The Symptom:** Small packets (SSH, DNS) work perfectly. Large TCP streams hang indefinitely.
 
-**The Cause:** BT/EE transit routers are routing IPv6 traffic over infrastructure with an MTU below the standard 1500 bytes. Crucially, these routers are dropping oversized packets **without returning the required ICMPv6 Type 2 errors.**
+**The Cause:** BT/EE transit routers are routing IPv6 traffic over infrastructure with an MTU below the standard Ethernet framing. Crucially, these routers are dropping oversized packets **without returning the required ICMPv6 Type 2 errors.**
 
 ### The PMTUD Blackhole Sequence
 
 ```mermaid
 sequenceDiagram
-    participant Client as Local Client (MTU 1500)
-    participant OPN as Local Gateway (OPNsense)
-    participant BTEE as BT/EE Core Transit (MTU < 1500)
+    participant Client as Local Client
+    participant OPN as Local Gateway
+    participant BTEE as BT/EE Core Transit (MTU 1280)
     participant Cloud as Target (e.g. HuggingFace)
 
-    Client->>OPN: IPv6 TCP Segment (1500 bytes)
-    OPN->>BTEE: Forwards Packet (1500 bytes)
+    Client->>OPN: IPv6 TCP Segment (e.g., 1492 or 1500 bytes)
+    OPN->>BTEE: Forwards Packet
     
     Note over BTEE: Router MTU limit exceeded.<br/>Packet is too large!
     BTEE--xCloud: PACKET DROPPED
@@ -42,7 +42,7 @@ sequenceDiagram
     Note over BTEE, Client: RFC 8200 VIOLATION:<br/>BT/EE router silently drops packet.<br/>Fails to return ICMPv6 Type 2 (Packet Too Big).
     end
     
-    Client->>OPN: TCP Retransmission (1500 bytes)
+    Client->>OPN: TCP Retransmission (Original Size)
     OPN->>BTEE: Forwards Packet
     BTEE--xCloud: PACKET DROPPED
     Note over Client: TCP Connection Hangs Indefinitely
@@ -63,10 +63,10 @@ While this client-side emergency recovery masks the core network failure for cas
 
 ## March 2026 Observations
 
-Following a complete verification of local hardware transparency (confirming a "True 1500" MTU path from the local LAN through the BT ONT), the following forensic data was captured. 
+Following a complete verification of local hardware transparency (confirming a clean baseline MTU path from the local LAN through the BT ONT), the following forensic data was captured. 
 
-### 1. The "True 1500" Control Group
-The following destinations successfully negotiated a full **1500-byte MTU**. This proves the local gateway and physical BT link are correctly configured for Baby Jumbo Frames (RFC 4638) and are **not** the source of the bottleneck:
+### 1. The Clean Control Group
+The following destinations successfully negotiated a full unfragmented MTU. This proves the local gateway and physical BT link are correctly configured and are **not** the source of the bottleneck:
 * `api.x.ai`
 * `cloudflare.com`
 * `gitlab.com`
@@ -75,9 +75,9 @@ The following destinations successfully negotiated a full **1500-byte MTU**. Thi
 * `crates.io`
 
 ### 2. Verified BT/EE Core Black Holes (AS2856 / AS5400)
-These endpoints fail standard Ethernet MTU (1500 bytes). Diagnostics confirm the packets leave the local network but vanish **inside the BT/EE transit core**. The following "Drop Hops" have been verified as belonging directly to BT Autonomous Systems:
+These endpoints fail standard payload delivery. Diagnostics confirm the packets leave the local network but vanish **inside the BT/EE transit core**. The following "Drop Hops" have been verified as belonging directly to BT Autonomous Systems:
 
-| Target Domain | Path MTU | Last Responding Hop (BT/EE Drop Hop) | BT ASN |
+| Target Domain | Path MTU Ceiling | Last Responding Hop (BT/EE Drop Hop) | BT ASN |
 | :--- | :--- | :--- | :--- |
 | `www.google.com` | **1280** | `2a00:2380:2015:3000::1d` | AS2856 |
 | `proxy.golang.org` | **1280** | `2a00:2380:106::99` | AS2856 |
@@ -88,7 +88,7 @@ These endpoints fail standard Ethernet MTU (1500 bytes). Diagnostics confirm the
 ### 3. Third-Party Upstream Black Holes
 During testing, additional black holes were observed routing to the following destinations. Traceroutes indicate these packets successfully left the BT AS and were dropped silently by upstream peering partners. 
 
-| Target Domain | Path MTU | Last Responding Hop | Responsible ASN |
+| Target Domain | Path MTU Ceiling | Last Responding Hop | Responsible ASN |
 | :--- | :--- | :--- | :--- |
 | `cloud.google.com` | **1280** | `2001:4860:0:1::7e80` | AS15169 (Google) |
 | `www.wikipedia.org` | **1280** | `2a11:4140:5002::d` | AS5405 (Inter.link) |
@@ -96,12 +96,12 @@ During testing, additional black holes were observed routing to the following de
 
 ## Forensic Evidence: The "Smoking Gun"
 
-Using the `--verify-ptb` (Wiretap) mode, raw packet captures were performed on the physical interface during 1500-byte transmissions. 
+Using the `--verify-ptb` (Wiretap) mode, raw packet captures were performed on the physical interface during transmissions. 
 
 **Observations:**
 1. **Zero ICMPv6 Type 2 Messages:** For all paths listed above, the local interface verified the complete absence of "Packet Too Big" responses from the BT/EE network. 
 2. **Immediate Vanishing:** Traceroute diagnostics confirm that packets vanish immediately after entering specific BT/EE prefixes (notably `2a00:2380::`).
-3. **PMTUD Failure:** Because no PTB message is returned, the client OS continues to attempt 1500-byte transmissions, leading to the observed TCP hangs.
+3. **PMTUD Failure:** Because no PTB message is returned, the client OS continues to attempt standard transmissions, leading to the observed TCP hangs.
 
 ## Reproduction for BT/EE Network Engineers
 
@@ -118,8 +118,10 @@ To reproduce these observations from a terminal on a BT/EE connection:
 
 ---
 
-## 🚨 FINAL CONCLUSION: The RFC 8200 Violation
+## 🚨 FINAL CONCLUSION: The RFC Violation Affects All Users
 
-To be absolutely clear: **The core fault is not the reduced MTU itself.** Running transit links, tunnels, or peering exchanges at a lower MTU (such as 1280 bytes / 1220 MSS) is entirely within the IPv6 specification. The critical infrastructure failure is that the BT/EE core is acting as a **silent black hole**.
+To be absolutely clear: **The core fault is not the reduced MTU itself, nor is it dependent on edge-cases like Baby Jumbo Frames (RFC 4638).** While a 1500-byte MTU was used in this report to establish a clean, unfragmented baseline to the BT gateway, **residential customers using standard legacy 1492-byte PPPoE configurations suffer the exact same outage.** If a standard 1492-byte packet hits the 1280-byte or 1321-byte constraints within the BT/EE core, it is silently dropped just the same.
+
+Running transit links, tunnels, or peering exchanges at a lower MTU (such as 1280 bytes / 1220 MSS) is entirely within the IPv6 specification. The critical infrastructure failure is that the BT/EE core is acting as a **silent black hole**.
 
 By dropping oversized packets *without* generating and returning the mandatory `ICMPv6 Type 2 (Packet Too Big)` messages, the BT/EE network completely breaks standard **Path MTU Discovery (PMTUD)**. This infrastructure failure leaves client TCP stacks entirely blind to the route's constraints, preventing local systems from adapting their payload sizes, and resulting directly in the severe, indefinite TCP hangs documented in this report.
