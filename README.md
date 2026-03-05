@@ -74,15 +74,6 @@ These endpoints fail standard Ethernet MTU (1500 bytes). Diagnostics confirm the
 | `news.ycombinator.com`| **1280** | `2a00:2000:2066::73` | **Critical** |
 | `www.wikipedia.org` | **1280** | `2a11:4140:5002::d` | **Critical** |
 
-### Payload Math Verification
-
-```mermaid
-pie title IPv6 Ping Payload Breakdown (1500 Bytes Total)
-    "IPv6 Header" : 40
-    "ICMPv6 Header" : 8
-    "Data Payload (-s 1452)" : 1452
-```
-
 ## Forensic Evidence: The "Smoking Gun"
 
 Using the `--verify-ptb` (Wiretap) mode, raw packet captures were performed on the physical interface during 1500-byte transmissions. 
@@ -105,4 +96,10 @@ To reproduce these observations from a terminal on a BT/EE connection:
 3. **Isolate the Ceiling:**
    `ping6 -D -s 1232 huggingface.co` (Expected: 0% loss at 1280 MTU)
 
-**Conclusion:** The BT/EE infrastructure at `2a00:2380::` and related peering points is failing to signal MTU constraints via ICMPv6 Type 2, violating RFC 8200 and breaking standard Path MTU Discovery for end users.
+---
+
+## 🚨 FINAL CONCLUSION: The RFC 8200 Violation
+
+To be absolutely clear: **The core fault is not the reduced MTU itself.** Running transit links, tunnels, or peering exchanges at a lower MTU (such as 1280 bytes / 1220 MSS) is entirely within the IPv6 specification. The critical infrastructure failure is that the BT/EE core is acting as a **silent black hole**.
+
+By dropping oversized packets *without* generating and returning the mandatory `ICMPv6 Type 2 (Packet Too Big)` messages, the BT/EE network completely breaks standard **Path MTU Discovery (PMTUD)**. This infrastructure failure leaves client TCP stacks entirely blind to the route's constraints, preventing local systems from adapting their payload sizes, and resulting directly in the severe, indefinite TCP hangs documented in this report.
