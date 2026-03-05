@@ -10,7 +10,7 @@ This repository contains the telemetry and tooling used to prove that specific B
 
 ## Executive Summary for BT/EE NOC
 * **The Fault:** Upstream BT/EE transit routers are silently dropping 1500-byte IPv6 packets without returning the mandatory `ICMPv6 Type 2 (Packet Too Big)` messages.
-* **The Impact:** Standard PMTUD fails. Large TCP streams (Docker pulls, AI model downloads, large API responses) hang indefinitely. 
+* **The Impact:** Standard PMTUD fails. Large TCP streams (Docker pulls, AI model downloads, large API responses) hang indefinitely. Mobile/IoT devices suffer excessive battery drain.
 * **The Proof:** Raw wire taps confirm local hardware is correctly configured for Baby Jumbo Frames (RFC 4638) and packets leave the premises at 1500 bytes, but vanish completely at specific BT/EE hops (e.g., within `2a00:2380::`).
 
 ## The Problem: RFC 8200 Non-Compliance
@@ -45,6 +45,23 @@ sequenceDiagram
     BTEE--xCloud: PACKET DROPPED
     Note over Client: TCP Connection Hangs Indefinitely
 ```
+
+### The Hidden Impact: OS Fallback & Hardware Battery Drain
+
+If the path is broken, why aren't all BT/EE customers noticing the outage? 
+
+Modern operating systems (macOS, Linux, iOS) employ aggressive error-recovery algorithms—such as **TCP Blackhole Detection** and **Happy Eyeballs (RFC 8305)**—to survive degraded networks. When a client stack encounters a silent drop, it waits for a TCP Retransmission Timeout (RTO), exponentially backs off, and eventually forces a fallback to IPv4 or a minimal MSS probe.
+
+
+
+While this client-side emergency recovery masks the core network failure for casual web browsing (manifesting merely as a "sluggish" page load), it introduces severe, compounding failures across the ecosystem:
+
+1. **Application Timeouts:** AI agents, CI/CD pipelines, and cloud-native tools (like `docker pull` or `git`) have strict application-layer timeouts. These tools frequently fail entirely *before* the OS network stack finishes its lengthy fallback routine. 
+2. **Mobile and IoT Battery Drain:** For mobile phones (EE) and embedded devices, Wi-Fi and cellular radios are designed to transmit, receive an ACK, and immediately return to a low-power sleep state. Silent packet drops force the network interface to stay "awake" in a high-power active state for several seconds while it waits for RTOs and processes retransmissions. This extended "radio tail time" directly and unnecessarily degrades device battery life.
+
+
+
+**Relying on end-user operating systems to perform emergency recovery in order to mask an RFC violation introduces excessive latency, degrades connection reliability, and unnecessarily drains consumer hardware batteries.**
 
 ## March 2026 Observations
 
