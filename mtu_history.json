@@ -1,6 +1,6 @@
 [
   {
-    "timestamp": "2026-03-03 19:39:09",
+    "timestamp": "2026-03-05 11:53:28",
     "results": [
       {
         "domain": "api.x.ai",
@@ -10,7 +10,7 @@
       },
       {
         "domain": "repo1.maven.org",
-        "ip": "2606:4700::6812:130c",
+        "ip": "2606:4700::6812:120c",
         "mtu": 1500,
         "drop_hop": null
       },
@@ -28,13 +28,13 @@
       },
       {
         "domain": "www.theguardian.com",
-        "ip": "2a04:4e42:200::367",
+        "ip": "2a04:4e42:600::367",
         "mtu": 1500,
         "drop_hop": null
       },
       {
         "domain": "cloudflare.com",
-        "ip": "2606:4700::6810:84e5",
+        "ip": "2606:4700::6810:85e5",
         "mtu": 1500,
         "drop_hop": null
       },
@@ -45,46 +45,46 @@
         "drop_hop": null
       },
       {
-        "domain": "pypi.org",
-        "ip": "2a04:4e42::223",
-        "mtu": 1415,
-        "drop_hop": "2a04:4e42::223"
+        "domain": "www.spotify.com",
+        "ip": "2a04:4e42::810",
+        "mtu": 1372,
+        "drop_hop": "2a00:2380:106::ef"
       },
       {
-        "domain": "www.spotify.com",
-        "ip": "2a04:4e42:600::810",
-        "mtu": 1392,
-        "drop_hop": "2a00:2380:106::ed"
+        "domain": "pypi.org",
+        "ip": "2a04:4e42::223",
+        "mtu": 1321,
+        "drop_hop": "2a00:2380:106::a7"
       },
       {
         "domain": "huggingface.co",
-        "ip": "2600:9000:28fd:aa00:17:b174:6d00:93a1",
+        "ip": "2600:9000:28fd:4a00:17:b174:6d00:93a1",
         "mtu": 1280,
-        "drop_hop": "2a00:2380:106::117"
+        "drop_hop": "Unknown"
       },
       {
         "domain": "cloud.google.com",
-        "ip": "2a00:1450:4009:c15::64",
+        "ip": "2a00:1450:4009:c15::66",
         "mtu": 1280,
         "drop_hop": "2001:4860:0:1::7e80"
       },
       {
         "domain": "aws.amazon.com",
-        "ip": "2600:9000:28fd:ea00:1c:a813:8500:93a1",
+        "ip": "2600:9000:28fd:c600:1c:a813:8500:93a1",
         "mtu": 1280,
-        "drop_hop": "2a00:2380:106::fd"
+        "drop_hop": "Unknown"
       },
       {
         "domain": "proxy.golang.org",
-        "ip": "2a00:1450:4009:c17::8d",
+        "ip": "2a00:1450:4009:c15::8d",
         "mtu": 1280,
-        "drop_hop": "2a00:2380:2015:3000::1d"
+        "drop_hop": "2a00:2380:106::99"
       },
       {
         "domain": "www.youtube.com",
-        "ip": "2a00:1450:4009:c17::be",
+        "ip": "2a00:1450:4009:c0b::be",
         "mtu": 1280,
-        "drop_hop": "2001:4860:0:1::8998"
+        "drop_hop": "Unknown"
       },
       {
         "domain": "news.ycombinator.com",
@@ -100,13 +100,13 @@
       },
       {
         "domain": "www.google.com",
-        "ip": "2a00:1450:4009:c17::67",
+        "ip": "2a00:1450:4009:c13::6a",
         "mtu": 1280,
-        "drop_hop": "2a00:2380:2015:3000::1f"
+        "drop_hop": "2a00:2380:2015:3000::1d"
       },
       {
         "domain": "api.openai.com",
-        "ip": "::ffff:172.66.0.243",
+        "ip": "::ffff:162.159.140.245",
         "mtu": "No IPv6",
         "drop_hop": null
       },
@@ -118,7 +118,7 @@
       },
       {
         "domain": "research.ibm.com",
-        "ip": "::ffff:169.63.31.106",
+        "ip": "::ffff:13.32.241.119",
         "mtu": "No IPv6",
         "drop_hop": null
       },
@@ -142,204 +142,31 @@
       },
       {
         "domain": "www.twitch.tv",
-        "ip": "::ffff:151.101.130.214",
+        "ip": "::ffff:151.101.194.214",
         "mtu": "No IPv6",
         "drop_hop": null
       },
       {
         "domain": "www.bbc.co.uk",
-        "ip": "::ffff:212.58.236.129",
+        "ip": "::ffff:212.58.235.129",
         "mtu": "No IPv6",
         "drop_hop": null
       },
       {
         "domain": "registry-1.docker.io",
-        "ip": "2600:1f18:2148:bc00:cb0d:7913:52e7:6474",
+        "ip": "2600:1f18:2148:bc02:dafc:e6e7:dafa:df6c",
         "mtu": "Blocked/Down",
         "drop_hop": "N/A"
       },
       {
         "domain": "quay.io",
-        "ip": "2600:1f18:d77:9002:967f:f10d:66ec:95aa",
+        "ip": "2600:1f18:d77:9000:e31e:fd9e:9d4f:9e71",
         "mtu": "Blocked/Down",
         "drop_hop": "N/A"
       },
       {
         "domain": "www.netflix.com",
-        "ip": "2a05:d018:76c:b683:f711:f0cf:5cc7:b815",
-        "mtu": "Blocked/Down",
-        "drop_hop": "N/A"
-      }
-    ]
-  },
-  {
-    "timestamp": "2026-03-03 22:21:24",
-    "results": [
-      {
-        "domain": "api.x.ai",
-        "ip": "2606:4700::6812:1250",
-        "mtu": 1500,
-        "drop_hop": null
-      },
-      {
-        "domain": "pypi.org",
-        "ip": "2a04:4e42:400::223",
-        "mtu": 1500,
-        "drop_hop": null
-      },
-      {
-        "domain": "repo1.maven.org",
-        "ip": "2606:4700::6812:120c",
-        "mtu": 1500,
-        "drop_hop": null
-      },
-      {
-        "domain": "gitlab.com",
-        "ip": "2606:4700:90:0:f22e:fbec:5bed:a9b9",
-        "mtu": 1500,
-        "drop_hop": null
-      },
-      {
-        "domain": "cloudflare.com",
-        "ip": "2606:4700::6810:85e5",
-        "mtu": 1500,
-        "drop_hop": null
-      },
-      {
-        "domain": "www.apple.com",
-        "ip": "2a02:26f0:1780:69c::1aca",
-        "mtu": 1500,
-        "drop_hop": null
-      },
-      {
-        "domain": "www.theguardian.com",
-        "ip": "2a04:4e42:200::367",
-        "mtu": 1498,
-        "drop_hop": "2a00:2302::1115:100:21"
-      },
-      {
-        "domain": "www.spotify.com",
-        "ip": "2a04:4e42::810",
-        "mtu": 1366,
-        "drop_hop": "2a04:4e42::810"
-      },
-      {
-        "domain": "huggingface.co",
-        "ip": "2600:9000:28fd:a200:17:b174:6d00:93a1",
-        "mtu": 1280,
-        "drop_hop": "2a00:23c7:60ea:d100:be24:11ff:feca:52d6"
-      },
-      {
-        "domain": "cloud.google.com",
-        "ip": "2a00:1450:4009:c0b::8b",
-        "mtu": 1280,
-        "drop_hop": "2a00:2380:2001:7000::19"
-      },
-      {
-        "domain": "aws.amazon.com",
-        "ip": "2600:9000:28fd:2400:1c:a813:8500:93a1",
-        "mtu": 1280,
-        "drop_hop": "2a01:578:0:12::44"
-      },
-      {
-        "domain": "proxy.golang.org",
-        "ip": "2a00:1450:4009:c04::8d",
-        "mtu": 1280,
-        "drop_hop": "2001:4860:0:1::632"
-      },
-      {
-        "domain": "crates.io",
-        "ip": "2600:9000:2076:6600:c:7ed3:240:93a1",
-        "mtu": 1280,
-        "drop_hop": "2a00:2302::1115:100:1f"
-      },
-      {
-        "domain": "www.youtube.com",
-        "ip": "2a00:1450:4009:c15::88",
-        "mtu": 1280,
-        "drop_hop": "2001:4860:0:1::7e98"
-      },
-      {
-        "domain": "www.wikipedia.org",
-        "ip": "2a02:ec80:300:ed1a::1",
-        "mtu": 1280,
-        "drop_hop": "2a11:4140:5002::d"
-      },
-      {
-        "domain": "www.google.com",
-        "ip": "2a00:1450:4009:c0b::68",
-        "mtu": 1280,
-        "drop_hop": "2a00:2380:2010:3000::3d"
-      },
-      {
-        "domain": "api.openai.com",
-        "ip": "::ffff:172.66.0.243",
-        "mtu": "No IPv6",
-        "drop_hop": null
-      },
-      {
-        "domain": "watsonx.ai",
-        "ip": "::ffff:199.46.34.76",
-        "mtu": "No IPv6",
-        "drop_hop": null
-      },
-      {
-        "domain": "research.ibm.com",
-        "ip": "::ffff:169.63.31.106",
-        "mtu": "No IPv6",
-        "drop_hop": null
-      },
-      {
-        "domain": "ghcr.io",
-        "ip": "::ffff:20.26.156.211",
-        "mtu": "No IPv6",
-        "drop_hop": null
-      },
-      {
-        "domain": "github.com",
-        "ip": "::ffff:20.26.156.215",
-        "mtu": "No IPv6",
-        "drop_hop": null
-      },
-      {
-        "domain": "api.github.com",
-        "ip": "::ffff:20.26.156.210",
-        "mtu": "No IPv6",
-        "drop_hop": null
-      },
-      {
-        "domain": "www.twitch.tv",
-        "ip": "::ffff:151.101.66.214",
-        "mtu": "No IPv6",
-        "drop_hop": null
-      },
-      {
-        "domain": "www.bbc.co.uk",
-        "ip": "::ffff:212.58.236.129",
-        "mtu": "No IPv6",
-        "drop_hop": null
-      },
-      {
-        "domain": "registry-1.docker.io",
-        "ip": "2600:1f18:2148:bc02:24d:41f6:7403:c695",
-        "mtu": "Blocked/Down",
-        "drop_hop": "N/A"
-      },
-      {
-        "domain": "quay.io",
-        "ip": "2600:1f18:d77:9000:167c:17b1:2ccd:8506",
-        "mtu": "Blocked/Down",
-        "drop_hop": "N/A"
-      },
-      {
-        "domain": "www.netflix.com",
-        "ip": "2a05:d018:76c:b683:a2cd:4240:8669:6d4",
-        "mtu": "Blocked/Down",
-        "drop_hop": "N/A"
-      },
-      {
-        "domain": "news.ycombinator.com",
-        "ip": "2606:7100:1:67::26",
+        "ip": "2a05:d018:76c:b685:c898:aa3a:42c7:9d21",
         "mtu": "Blocked/Down",
         "drop_hop": "N/A"
       }
