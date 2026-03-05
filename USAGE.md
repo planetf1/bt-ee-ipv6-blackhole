@@ -12,11 +12,25 @@ The script automates a sequence of network forensics against a predefined list o
 4. **Binary Search MTU Calculation:** Automatically calculates the exact maximum packet size the broken link will accept before dropping.
 5. **Wiretap Verification (Optional):** Uses raw socket sniffing (`tcpdump`) to definitively prove whether the transit router is returning the required `ICMPv6 Type 2 (Packet Too Big)` messages.
 
-## Prerequisites
+## Prerequisites & OS Support
 
-* **Python 3.x**
-* **Operating System:** macOS or Linux (commands dynamically adapt based on the platform).
+The Python script natively auto-detects your operating system (`darwin` vs `linux`) and adjusts its underlying shell commands accordingly. 
+
+* **Python 3.x** is required.
 * **Root Privileges:** Required *only* if you want to use the wiretap (`--verify-ptb`) feature.
+
+### macOS (Native)
+macOS environments are fully supported out-of-the-box. The script utilizes native Darwin networking binaries (`ping6` and `traceroute6`).
+* *Note: The wiretap feature automatically binds to the `pktap,any` pseudo-interface to guarantee capture across all logical and physical interfaces.*
+
+### Linux (Debian/Ubuntu/RHEL)
+Linux environments are fully supported, but require standard networking utilities to be installed. The script dynamically switches to `ping -6` and `traceroute -6` with specific flags for the Linux IP stack.
+* **Dependencies:** Ensure the following packages are installed:
+  ```bash
+  sudo apt update
+  sudo apt install iputils-ping traceroute tcpdump
+  ```
+* *Note: The wiretap feature binds to the `any` interface on Linux.*
 
 ## Running the Diagnostics
 
@@ -39,6 +53,5 @@ sudo python3 mtu_forensics.py --verify-ptb
 
 The script outputs real-time forensic data to the console and generates two files in the execution directory:
 
-`mtu_diagnostic.log`: A detailed, human-readable execution log containing all routing decisions, drop hops, and binary search results.
-
-`mtu_history.json`: A structured telemetry file containing historical scan data, sorted by the severity of the MTU restriction. Useful for long-term monitoring or programmatic analysis.
+* `mtu_diagnostic.log`: A detailed, human-readable execution log containing all routing decisions, drop hops, and binary search results.
+* `mtu_history.json`: A structured telemetry file containing historical scan data, sorted by the severity of the MTU restriction. Useful for long-term monitoring or programmatic analysis.
