@@ -8,12 +8,10 @@ import time
 import logging
 import argparse
 import sys
+import shutil
 from datetime import datetime
 
 # --- Configuration ---
-LOG_FILE = "mtu_diagnostic.log"
-JSON_FILE = "mtu_history.json"
-
 TARGET_SITES = [
     "api.openai.com",
     "api.x.ai",
@@ -45,14 +43,16 @@ TARGET_SITES = [
     "www.apple.com",
 ]
 
-# --- Logging Setup ---
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)-7s | %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    handlers=[logging.FileHandler(LOG_FILE), logging.StreamHandler()],
-)
+def setup_logging(log_file):
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
 
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)-7s | %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
+    )
 
 def resolve_ipv6(domain):
     try:
@@ -63,7 +63,6 @@ def resolve_ipv6(domain):
         return info[0][4][0]
     except socket.gaierror:
         return None
-
 
 def ping_v6(ip, payload_size, os_name):
     if os_name == "darwin":
@@ -91,17 +90,19 @@ def ping_v6(ip, payload_size, os_name):
     except subprocess.TimeoutExpired:
         return False
 
-
 def get_blackhole_hop(ip, os_name):
     if os_name == "darwin":
         cmd = ["traceroute6", "-I", "-q", "1", "-w", "1", "-m", "20", ip, "1500"]
     else:
-        cmd = ["traceroute", "-6", "-q", "1", "-w", "1", "-m", "20", ip, "1500"]
+        # Uses -I to force ICMPv6 Echo Requests instead of UDP
+        cmd = ["traceroute", "-6", "-I", "-q", "1", "-w", "1", "-m", "20", ip, "1500"]
 
     try:
-        output = subprocess.check_output(
-            cmd, stderr=subprocess.DEVNULL, universal_newlines=True, timeout=30
+        result = subprocess.run(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, universal_newlines=True, timeout=30
         )
+
+        output = result.stdout
         last_valid_ip = None
         ipv6_pattern = re.compile(r"([0-9a-fA-F:]+:[0-9a-fA-F:]+)")
 
@@ -111,17 +112,16 @@ def get_blackhole_hop(ip, os_name):
                 last_valid_ip = matches[0]
 
         return last_valid_ip if last_valid_ip else "Unknown"
+
     except subprocess.TimeoutExpired:
         return "Trace Timed Out"
-    except Exception:
-        return "Trace Failed"
-
+    except Exception as e:
+        return f"Trace Failed: {str(e)}"
 
 def verify_ptb_missing(ip, os_name):
     """
     Spins up a background sniffer to explicitly listen for ICMPv6 Type 2 packets.
     """
-    # macOS requires pktap to monitor all interfaces reliably, Linux can use 'any'
     interface = "any" if os_name != "darwin" else "pktap,any"
 
     dump_cmd = [
@@ -139,9 +139,8 @@ def verify_ptb_missing(ip, os_name):
         sniffer = subprocess.Popen(
             dump_cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
         )
-        time.sleep(0.5)  # Give tcpdump time to bind
+        time.sleep(0.5)
 
-        # Fire the oversized payload
         if os_name == "darwin":
             ping_cmd = ["ping6", "-c", "1", "-s", "1452", ip]
         else:
@@ -161,7 +160,6 @@ def verify_ptb_missing(ip, os_name):
 
         subprocess.run(ping_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-        # Wait up to 2 seconds for a Packet Too Big response
         try:
             out, _ = sniffer.communicate(timeout=2.0)
             if out:
@@ -174,9 +172,7 @@ def verify_ptb_missing(ip, os_name):
         logging.error(f"Packet capture failed: {e}")
         return None
 
-
-def analyze_path(domain, args):
-    os_name = platform.system().lower()
+def analyze_path(domain, args, os_name):
     logging.info(f"--- Initiating diagnostics for {domain} ---")
 
     ip = resolve_ipv6(domain)
@@ -190,7 +186,6 @@ def analyze_path(domain, args):
     max_payload = 1452
     overhead = 48
 
-    # 1. Baseline Test
     logging.info(f"[{domain}] Testing absolute minimum IPv6 MTU (1280 bytes)...")
     if not ping_v6(ip, min_payload, os_name):
         logging.error(
@@ -198,7 +193,6 @@ def analyze_path(domain, args):
         )
         return {"domain": domain, "ip": ip, "mtu": "Blocked/Down", "drop_hop": "N/A"}
 
-    # 2. Standard Ethernet Test
     logging.info(
         f"[{domain}] Baseline passed. Testing standard Ethernet MTU (1500 bytes)..."
     )
@@ -208,7 +202,6 @@ def analyze_path(domain, args):
         )
         return {"domain": domain, "ip": ip, "mtu": 1500, "drop_hop": None}
 
-    # 3. Blackhole Isolation & Wiretap Verification
     logging.error(
         f"[{domain}] PROOF: 1500 byte packet dropped silently. PMTUD is broken on this route."
     )
@@ -236,7 +229,6 @@ def analyze_path(domain, args):
     drop_hop = get_blackhole_hop(ip, os_name)
     logging.error(f"[{domain}] PROOF: Packets vanish immediately after hop {drop_hop}.")
 
-    # 4. Binary Search
     logging.info(
         f"[{domain}] Executing binary search to calculate exact MTU ceiling of the broken link..."
     )
@@ -258,7 +250,6 @@ def analyze_path(domain, args):
 
     return {"domain": domain, "ip": ip, "mtu": final_mtu, "drop_hop": drop_hop}
 
-
 def main():
     parser = argparse.ArgumentParser(
         description="MTU Forensics and PMTUD Diagnostic Tool"
@@ -268,13 +259,45 @@ def main():
         action="store_true",
         help="Run raw packet capture to verify absence of ICMPv6 PTB messages (Requires sudo)",
     )
+    parser.add_argument(
+        "--log-file",
+        default="mtu_diagnostic.log",
+        help="Output filename for the human-readable log",
+    )
+    parser.add_argument(
+        "--json-file",
+        default="mtu_history.json",
+        help="Output filename for the JSON telemetry data",
+    )
     args = parser.parse_args()
+
+    os_name = platform.system().lower()
+
+    # --- Pre-flight Dependency Check ---
+    missing_deps = []
+    if os_name == "darwin":
+        if not shutil.which("ping6"): missing_deps.append("ping6")
+        if not shutil.which("traceroute6"): missing_deps.append("traceroute6")
+    else:
+        if not shutil.which("ping"): missing_deps.append("ping")
+        if not shutil.which("traceroute"): missing_deps.append("traceroute")
+
+    if args.verify_ptb and not shutil.which("tcpdump"):
+        missing_deps.append("tcpdump")
+
+    if missing_deps:
+        print(f"CRITICAL ERROR: Missing required system utilities: {', '.join(missing_deps)}")
+        if os_name != "darwin":
+            print("-> Fix on Debian/Ubuntu with: sudo apt install iputils-ping traceroute tcpdump")
+        sys.exit(1)
 
     if args.verify_ptb and os.geteuid() != 0:
         print(
             "ERROR: The --verify-ptb flag requires raw socket access. Please run with sudo."
         )
         sys.exit(1)
+
+    setup_logging(args.log_file)
 
     logging.info("===================================================")
     logging.info("Starting scheduled MTU and PMTUD diagnostic routine")
@@ -283,7 +306,7 @@ def main():
     scan_results = []
 
     for domain in TARGET_SITES:
-        result = analyze_path(domain, args)
+        result = analyze_path(domain, args, os_name)
         scan_results.append(result)
         time.sleep(1.0)
 
@@ -295,19 +318,18 @@ def main():
     }
 
     history = []
-    if os.path.exists(JSON_FILE):
-        with open(JSON_FILE, "r") as f:
+    if os.path.exists(args.json_file):
+        with open(args.json_file, "r") as f:
             try:
                 history = json.load(f)
             except json.JSONDecodeError:
                 pass
 
     history.append(run_data)
-    with open(JSON_FILE, "w") as f:
+    with open(args.json_file, "w") as f:
         json.dump(history, f, indent=2)
 
-    logging.info("Diagnostic routine complete. JSON telemetry updated.")
-
+    logging.info(f"Diagnostic routine complete. Telemetry saved to {args.json_file}")
 
 if __name__ == "__main__":
     main()
