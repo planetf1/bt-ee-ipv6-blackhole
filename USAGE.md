@@ -1,36 +1,48 @@
-# MTU Forensics Script Usage
+# MTU Forensics Script Usage (v9)
 
-This document details how to use the `mtu_forensics.py` script to diagnose IPv6 Path MTU Discovery (PMTUD) issues and silent black holes.
+This document explains how to use `mtu_forensics_v9.py` to investigate IPv6 Path MTU Discovery (PMTUD) behavior across ICMP, UDP, and TCP.
 
-## What the Script Does
+The workflow is designed for evidence gathering: confirm what is happening on your path, then decide whether symptoms indicate a real network fault or expected endpoint/network policy.
 
-The script automates a sequence of network forensics against a predefined list of target domains (focused heavily on AI endpoints, container registries, and developer tooling):
+## What v9 Does
 
-1. **Baseline Test (1280 bytes):** Verifies the endpoint is reachable via IPv6 and accepts the absolute minimum required IPv6 MTU.
-2. **Standard MTU Test (1500 bytes):** Verifies if a standard 1500-byte payload can successfully traverse the entire route without fragmentation.
-3. **Blackhole Isolation (Traceroute):** If the 1500-byte payload drops silently, it performs an ICMPv6 traceroute using oversized packets to identify the exact router hop where the packet vanishes.
-4. **Binary Search MTU Calculation:** Automatically calculates the exact maximum packet size the broken link will accept before dropping.
-5. **Wiretap Verification (Optional):** Uses raw socket sniffing (`tcpdump`) to definitively prove whether the transit router is returning the required `ICMPv6 Type 2 (Packet Too Big)` messages.
+The script runs per-target diagnostics across three protocols:
+
+1. **ICMP test path:** baseline + ceiling check (binary-search fallback when 1500 fails).
+2. **UDP test path:** sends 1500-sized probes with don't-fragment behavior and optional PTB sniffing.
+3. **TCP test path:** reads negotiated MSS and path MTU from kernel state (`TCP_INFO` on Linux, MSS-derived estimate on macOS).
+
+This multi-signal approach helps distinguish:
+- ICMP control-plane quirks,
+- endpoint MSS clamping,
+- and genuine PMTUD breakage.
 
 ## Prerequisites & OS Support
 
-The Python script natively auto-detects your operating system (`darwin` vs `linux`) and adjusts its underlying shell commands accordingly. 
+The script auto-detects your OS (`darwin` or `linux`) and selects platform-appropriate socket and probe behavior.
 
 * **Python 3.x** is required.
 * **Root Privileges:** Required *only* if you want to use the wiretap (`--verify-ptb`) feature.
 
 ### macOS (Native)
-macOS environments are fully supported out-of-the-box. The script utilizes native Darwin networking binaries (`ping6` and `traceroute6`).
-* *Note: The wiretap feature automatically binds to the `pktap,any` pseudo-interface to guarantee capture across all logical and physical interfaces.*
+macOS is supported out-of-the-box.
 
-### Linux (Debian/Ubuntu/RHEL)
-Linux environments are fully supported, but require standard networking utilities to be installed. The script dynamically switches to `ping -6` and `traceroute -6` with specific flags for the Linux IP stack.
-* **Dependencies:** Ensure the following packages are installed:
+- Uses native Darwin probing behavior.
+- Wiretap mode binds to `pktap,any` for inbound ICMPv6 PTB capture.
+- TCP path MTU is estimated from MSS (`MSS + 60`) because exact PMTU is not exposed in the same way as Linux.
+
+### Linux (Debian/Ubuntu/RHEL/Fedora)
+Linux is fully supported and provides the strongest signal quality because v9 can read PMTU from `TCP_INFO`.
+
+- **Dependencies:** ensure standard networking tools are installed:
   ```bash
   sudo apt update
   sudo apt install iputils-ping traceroute tcpdump
   ```
-* *Note: The wiretap feature binds to the `any` interface on Linux.*
+
+  Fedora/RHEL example equivalents are also fine (`iputils`, `traceroute`, `tcpdump`).
+
+- Wiretap mode binds to `any` on Linux.
 
 ## Running the Diagnostics
 
@@ -38,7 +50,7 @@ Linux environments are fully supported, but require standard networking utilitie
 Runs the full suite of MTU discovery, binary search, and traceroute isolation without requiring root privileges.
 
 ```bash
-python3 mtu_forensics.py
+python3 mtu_forensics_v9.py
 ```
 
 ### Forensic "Wiretap" Mode (Recommended)
@@ -46,12 +58,31 @@ python3 mtu_forensics.py
 Spins up a background sniffer on your physical network interfaces to monitor for ICMPv6 Type 2 messages. This provides the "smoking gun" evidence that upstream routers are dropping packets silently.
 
 ```bash
-sudo python3 mtu_forensics.py --verify-ptb
+sudo python3 mtu_forensics_v9.py --verify-ptb
+```
+
+### Optional Output File Overrides
+
+```bash
+python3 mtu_forensics_v9.py --log-file custom.log --json-file custom.json
 ```
 
 ### Outputs and Telemetry
 
-The script outputs real-time forensic data to the console and generates two files in the execution directory:
+The script prints a per-domain summary and writes two artifacts:
 
-* `mtu_diagnostic.log`: A detailed, human-readable execution log containing all routing decisions, drop hops, and binary search results.
-* `mtu_history.json`: A structured telemetry file containing historical scan data, sorted by the severity of the MTU restriction. Useful for long-term monitoring or programmatic analysis.
+- `mtu_diagnostic_v9.log`: detailed run log.
+- `mtu_history_v9.json`: appended structured telemetry for trend/history analysis.
+
+## Interpreting Results (Important)
+
+Use all three protocols together before concluding there is a blackhole:
+
+- **If TCP PMTU is exact 1500 and UDP 1500 succeeds** while ICMP appears lower, this often indicates ICMP handling/policy differences, not necessarily broken data-plane PMTUD.
+- **If PTB is not seen**, that can still be normal on an unconstrained path (no router needed to send PTB).
+- **If large payloads consistently fail across protocols and no PTB is ever observed**, then a silent-drop/blackhole hypothesis becomes stronger and should be escalated with logs.
+
+Recommended escalation bundle:
+- latest `mtu_diagnostic_v9.log`
+- latest `mtu_history_v9.json`
+- test timestamp, source ASN/location, and affected destinations

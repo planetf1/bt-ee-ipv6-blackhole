@@ -1,127 +1,73 @@
-# BT/EE IPv6 PMTUD Blackhole Fault Report
+# BT/EE IPv6 PMTUD Investigation Notes
 
-A forensic analysis and automated diagnostic tool documenting severe IPv6 Path MTU Discovery (PMTUD) black holes within the **BT/EE core transit network**. 
+This repository tracks ongoing IPv6 MTU/PMTUD diagnostics for BT/EE paths using repeatable telemetry from `mtu_forensics_v9.py`.
 
-This repository contains the telemetry and tooling used to prove that specific BT/EE peering routers are violating RFC 8200, resulting in severe TCP hangs that disrupt AI, cloud, and software engineering workflows.
+The original working hypothesis was a potential IPv6 PMTUD blackhole. Current v9 evidence suggests a more nuanced position: we still monitor for faults, but we do **not** yet have definitive proof of an ISP-side RFC violation for the tested targets.
 
 📖 **Want to run the diagnostic tool yourself? See the [Usage Guide](USAGE.md).**
 
 ---
 
-## Executive Summary for BT/EE NOC
-* **The Fault:** Upstream BT/EE transit routers are silently dropping IPv6 packets that exceed internal link MTUs without returning the mandatory `ICMPv6 Type 2 (Packet Too Big)` messages.
-* **The Impact:** Standard PMTUD fails. Large TCP streams (Docker pulls, AI model downloads, large API responses) hang indefinitely. Mobile/IoT devices suffer excessive battery drain. **This affects both standard 1492-byte PPPoE users and 1500-byte Baby Jumbo users equally.**
-* **The Proof:** Raw wire taps confirm local hardware is correctly configured, but packets vanish completely at specific BT/EE-owned hops (e.g., within `2a00:2380::`) without generating ICMPv6 rejection notices.
+## Current Position (March 2026)
 
-## The Problem: RFC 8200 Non-Compliance
+- **Suspicion raised:** intermittent hangs and ICMP ceilings prompted a blackhole investigation.
+- **What we observe now:** for most tested destinations, UDP and kernel-level TCP telemetry indicate an effective path MTU of **1500**.
+- **PTB status:** in current v9 runs we have seen **no ICMPv6 Type 2 (Packet Too Big)** messages during probes.
+- **Interpretation:** absence of PTB messages alone is **not** proof of breakage; on an unconstrained 1500 path, no PTB is expected.
 
-Modern dual-stack and IPv6-only environments rely on **Path MTU Discovery (PMTUD)** to negotiate packet sizes. If a packet is too large for a specific router along a path, that router must drop the packet and return an `ICMPv6 Type 2 (Packet Too Big)` message to the sender, allowing the connection to gracefully resize its payload.
+In short: there may still be edge-case behavior worth investigating, but the latest evidence does not prove systemic BT/EE IPv6 MTU failure.
 
+## Why v9 Is More Reliable
 
+`mtu_forensics_v9.py` correlates three signal types:
 
-**The Symptom:** Small packets (SSH, DNS) work perfectly. Large TCP streams hang indefinitely.
+1. **ICMP probe behavior** (reachability and packet-size tolerance).
+2. **UDP DF-style probes** with PTB sniffing.
+3. **TCP kernel introspection** (`TCP_INFO`) on Linux for per-destination PMTU, with MSS fallback on macOS.
 
-**The Cause:** BT/EE transit routers are routing IPv6 traffic over infrastructure with an MTU below the standard Ethernet framing. Crucially, these routers are dropping oversized packets **without returning the required ICMPv6 Type 2 errors.**
+For Linux/Fedora environments, v9 reads kernel PMTU from `tcp_info` (verified offset `60` for this environment), giving destination-cache visibility that simple `ping` cannot provide.
 
-### The PMTUD Blackhole Sequence
+## Snapshot from `mtu_diagnostic_v9.log` / `mtu_history_v9.json`
 
-```mermaid
-sequenceDiagram
-    participant Client as Local Client
-    participant OPN as Local Gateway
-    participant BTEE as BT/EE Core Transit (MTU 1280)
-    participant Cloud as Target (e.g. HuggingFace)
+Run timestamp: `2026-03-12 08:21:16` (host: `fedora`)
 
-    Client->>OPN: IPv6 TCP Segment (e.g., 1492 or 1500 bytes)
-    OPN->>BTEE: Forwards Packet
-    
-    Note over BTEE: Router MTU limit exceeded.<br/>Packet is too large!
-    BTEE--xCloud: PACKET DROPPED
-    
-    rect rgb(255, 200, 200)
-    Note over BTEE, Client: RFC 8200 VIOLATION:<br/>BT/EE router silently drops packet.<br/>Fails to return ICMPv6 Type 2 (Packet Too Big).
-    end
-    
-    Client->>OPN: TCP Retransmission (Original Size)
-    OPN->>BTEE: Forwards Packet
-    BTEE--xCloud: PACKET DROPPED
-    Note over Client: TCP Connection Hangs Indefinitely
-```
+- **TCP PMTU:** `1500` (exact) across all successful TCP probes in this run.
+- **MSS range observed:** approximately `1328` to `1428` depending on destination.
+- **ICMP divergence:** `huggingface.co` and `aws.amazon.com` showed ICMP ceiling around `1400`, while UDP and TCP still indicated `1500` path capability.
+- **PTB capture:** no inbound PTB packets seen during verify mode for tested traffic.
 
-### The Hidden Impact: OS Fallback & Hardware Battery Drain
+This pattern is consistent with ICMP policy/rate behavior and/or conservative MSS negotiation at remote edges, not necessarily a broken data-plane path.
 
-If the path is broken, why aren't all BT/EE customers noticing the outage? 
+## The PTB Question: Where Are the "Packet Too Big" Messages?
 
-Modern operating systems employ aggressive error-recovery algorithms—such as **TCP Blackhole Detection** and **Happy Eyeballs (RFC 8305)**—to survive degraded networks. When a client stack encounters a silent drop, it waits for a TCP Retransmission Timeout (RTO), exponentially backs off, and eventually forces a fallback to IPv4 or a minimal MSS probe.
+The most striking observation across all v9 runs is the **complete absence of ICMPv6 Type 2 (Packet Too Big) responses**—even when intentionally probing with oversized payloads.
 
+This raises a critical question:
 
+**Are ICMP Type 2 messages being filtered or rate-limited at the BT/EE edge or transit backbone?**
 
-While this client-side emergency recovery masks the core network failure for casual web browsing, it introduces severe, compounding failures across the ecosystem:
+### Why This Matters
 
-1. **Application Timeouts:** AI agents, CI/CD pipelines, and cloud-native tools (like `docker pull` or `git`) have strict application-layer timeouts. These tools frequently fail entirely *before* the OS network stack finishes its lengthy fallback routine. 
-2. **Mobile and IoT Battery Drain:** For mobile phones (EE) and embedded devices, Wi-Fi and cellular radios are designed to transmit, receive an ACK, and immediately return to a low-power sleep state. Silent packet drops force the network interface to stay "awake" in a high-power active state for several seconds while it waits for RTOs and processes retransmissions. This extended "radio tail time" directly degrades device battery life.
+If `ICMPv6 Type 2` is selectively filtered while data-plane TCP/UDP traffic flows normally:
 
-## March 2026 Observations
+1. **PMTUD is broken by design:** Clients cannot learn path MTU constraints via the standard mechanism.
+2. **Modern TCP survives but at cost:** TCP Blackhole Detection and fallback mechanisms (RFC 8305) work *eventually*, but impose real latency penalties and timeout delays.
+3. **Older/embedded systems fail silently:** Many IoT, mobile, and legacy devices do not implement aggressive ICMP fallback strategies and will hang indefinitely.
+4. **Conservative MSS negotiation emerges as workaround:** If endpoints cannot trust PMTUD, they negotiate smaller MSS values (1328–1348) to avoid hitting unknown ceilings. This is visible in the v9 data and represents a *symptom* of broken PMTUD, not a solution.
 
-Following a complete verification of local hardware transparency (confirming a clean baseline MTU path from the local LAN through the BT ONT), the following forensic data was captured. 
+### What We Need to Know
 
-### 1. The Clean Control Group
-The following destinations successfully negotiated a full unfragmented MTU. This proves the local gateway and physical BT link are correctly configured and are **not** the source of the bottleneck:
-* `api.x.ai`
-* `cloudflare.com`
-* `gitlab.com`
-* `www.apple.com`
-* `repo1.maven.org`
-* `crates.io`
+We are not claiming a proof of fault—we are asking for clarity:
 
-### 2. Verified BT/EE Core Black Holes (AS2856 / AS5400)
-These endpoints fail standard payload delivery. Diagnostics confirm the packets leave the local network but vanish **inside the BT/EE transit core**. The following "Drop Hops" have been verified as belonging directly to BT Autonomous Systems:
+- **Are ICMPv6 Type 2 messages intentionally filtered?** If so, by which BT/EE network component (edge, transit, peering)?
+- **If filtering is intentional, what is the documented policy?** And does it account for impact on PMTUD-dependent services?
+- **If filtering is not intentional, can it be investigated?** Silent packet loss on a critical signaling protocol should be visible in BT/EE's own telemetry.
 
-| Target Domain | Path MTU Ceiling | Last Responding Hop (BT/EE Drop Hop) | BT ASN |
-| :--- | :--- | :--- | :--- |
-| `www.google.com` | **1280** | `2a00:2380:2015:3000::1d` | AS2856 |
-| `proxy.golang.org` | **1280** | `2a00:2380:106::99` | AS2856 |
-| `news.ycombinator.com`| **1280** | `2a00:2000:2066::73` | AS5400 |
-| `pypi.org` | **1321** | `2a00:2380:106::a7` | AS2856 |
-| `spotify.com` (CDN) | **1372** | `2a00:2380:106::ef` | AS2856 |
+The collateral evidence—conservative MSS clamping, ICMP-only ceilings, no PTB ever observed—suggests this is structural rather than transient. **That requires an answer from the network operator.**
 
-### 3. Third-Party Upstream Black Holes
-During testing, additional black holes were observed routing to the following destinations. Traceroutes indicate these packets successfully left the BT AS and were dropped silently by upstream peering partners. 
+## Files in This Repo
 
-| Target Domain | Path MTU Ceiling | Last Responding Hop | Responsible ASN |
-| :--- | :--- | :--- | :--- |
-| `cloud.google.com` | **1280** | `2001:4860:0:1::7e80` | AS15169 (Google) |
-| `www.wikipedia.org` | **1280** | `2a11:4140:5002::d` | AS5405 (Inter.link) |
-| `huggingface.co` | **1280** | *Trace Timeout* | *Unknown* |
-
-## Forensic Evidence: The "Smoking Gun"
-
-Using the `--verify-ptb` (Wiretap) mode, raw packet captures were performed on the physical interface during transmissions. 
-
-**Observations:**
-1. **Zero ICMPv6 Type 2 Messages:** For all paths listed above, the local interface verified the complete absence of "Packet Too Big" responses from the BT/EE network. 
-2. **Immediate Vanishing:** Traceroute diagnostics confirm that packets vanish immediately after entering specific BT/EE prefixes (notably `2a00:2380::`).
-3. **PMTUD Failure:** Because no PTB message is returned, the client OS continues to attempt standard transmissions, leading to the observed TCP hangs.
-
-## Reproduction for BT/EE Network Engineers
-
-To reproduce these observations from a terminal on a BT/EE connection:
-
-1. **Verify Local Transparency (Success):**
-   `ping6 -D -s 1452 api.x.ai` (Expected: 0% loss)
-
-2. **Demonstrate Upstream Black Hole (Failure):**
-   `ping6 -D -s 1452 proxy.golang.org` (Expected: 100% loss / Request Timeout)
-
-3. **Isolate the Ceiling:**
-   `ping6 -D -s 1232 proxy.golang.org` (Expected: 0% loss at 1280 MTU)
-
----
-
-## 🚨 FINAL CONCLUSION: The RFC Violation Affects All Users
-
-To be absolutely clear: **The core fault is not the reduced MTU itself, nor is it dependent on edge-cases like Baby Jumbo Frames (RFC 4638).** While a 1500-byte MTU was used in this report to establish a clean, unfragmented baseline to the BT gateway, **residential customers using standard legacy 1492-byte PPPoE configurations suffer the exact same outage.** If a standard 1492-byte packet hits the 1280-byte or 1321-byte constraints within the BT/EE core, it is silently dropped just the same.
-
-Running transit links, tunnels, or peering exchanges at a lower MTU (such as 1280 bytes / 1220 MSS) is entirely within the IPv6 specification. The critical infrastructure failure is that the BT/EE core is acting as a **silent black hole**.
-
-By dropping oversized packets *without* generating and returning the mandatory `ICMPv6 Type 2 (Packet Too Big)` messages, the BT/EE network completely breaks standard **Path MTU Discovery (PMTUD)**. This infrastructure failure leaves client TCP stacks entirely blind to the route's constraints, preventing local systems from adapting their payload sizes, and resulting directly in the severe, indefinite TCP hangs documented in this report.
+- `mtu_forensics_v9.py` — current multi-protocol forensics tool.
+- `mtu_diagnostic_v9.log` — human-readable execution log.
+- `mtu_history_v9.json` — structured historical telemetry.
+- `mtu_forensics.py`, `mtu_diagnostic.log`, `mtu_history.json` — legacy generation kept for comparison.
