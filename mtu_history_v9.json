@@ -1,0 +1,405 @@
+[
+  {
+    "timestamp": "2026-03-12 07:42:42",
+    "os": "darwin",
+    "hostname": "macbook.cherrybyte.me.uk",
+    "results": [
+      {
+        "domain": "api.x.ai",
+        "protocol": "ICMP",
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "api.x.ai",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "api.x.ai",
+        "protocol": "TCP",
+        "mtu": 1408,
+        "mss": 1348,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "huggingface.co",
+        "protocol": "ICMP",
+        "mtu": 1280,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "huggingface.co",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "huggingface.co",
+        "protocol": "TCP",
+        "mtu": 1388,
+        "mss": 1328,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "cloud.google.com",
+        "protocol": "ICMP",
+        "mtu": 1280,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "cloud.google.com",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "cloud.google.com",
+        "protocol": "TCP",
+        "mtu": 1488,
+        "mss": 1428,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "aws.amazon.com",
+        "protocol": "ICMP",
+        "mtu": 1280,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "aws.amazon.com",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "aws.amazon.com",
+        "protocol": "TCP",
+        "mtu": 1388,
+        "mss": 1328,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "registry-1.docker.io",
+        "protocol": "ICMP",
+        "mtu": "Blocked",
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "registry-1.docker.io",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "registry-1.docker.io",
+        "protocol": "TCP",
+        "mtu": 1488,
+        "mss": 1428,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "ipv6.he.net",
+        "protocol": "ICMP",
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "ipv6.he.net",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "ipv6.he.net",
+        "protocol": "TCP",
+        "mtu": 1488,
+        "mss": 1428,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "quay.io",
+        "protocol": "ICMP",
+        "mtu": "Blocked",
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "quay.io",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "quay.io",
+        "protocol": "TCP",
+        "mtu": 1488,
+        "mss": 1428,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "pypi.org",
+        "protocol": "ICMP",
+        "mtu": 1467,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "pypi.org",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "pypi.org",
+        "protocol": "TCP",
+        "mtu": 1468,
+        "mss": 1408,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "repo1.maven.org",
+        "protocol": "ICMP",
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "repo1.maven.org",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "repo1.maven.org",
+        "protocol": "TCP",
+        "mtu": 1408,
+        "mss": 1348,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "proxy.golang.org",
+        "protocol": "ICMP",
+        "mtu": 1280,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "proxy.golang.org",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "proxy.golang.org",
+        "protocol": "TCP",
+        "mtu": 1488,
+        "mss": 1428,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "crates.io",
+        "protocol": "ICMP",
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "crates.io",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "crates.io",
+        "protocol": "TCP",
+        "mtu": 1468,
+        "mss": 1408,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "gitlab.com",
+        "protocol": "ICMP",
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "gitlab.com",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "gitlab.com",
+        "protocol": "TCP",
+        "mtu": 1408,
+        "mss": 1348,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.youtube.com",
+        "protocol": "ICMP",
+        "mtu": 1280,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.youtube.com",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.youtube.com",
+        "protocol": "TCP",
+        "mtu": 1488,
+        "mss": 1428,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.netflix.com",
+        "protocol": "ICMP",
+        "mtu": "Blocked",
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.netflix.com",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.netflix.com",
+        "protocol": "TCP",
+        "mtu": 1480,
+        "mss": 1420,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.wikipedia.org",
+        "protocol": "ICMP",
+        "mtu": 1280,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.wikipedia.org",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.wikipedia.org",
+        "protocol": "TCP",
+        "mtu": 1448,
+        "mss": 1388,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.google.com",
+        "protocol": "ICMP",
+        "mtu": 1280,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.google.com",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.google.com",
+        "protocol": "TCP",
+        "mtu": 1488,
+        "mss": 1428,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "cloudflare.com",
+        "protocol": "ICMP",
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "cloudflare.com",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "cloudflare.com",
+        "protocol": "TCP",
+        "mtu": 1408,
+        "mss": 1348,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.apple.com",
+        "protocol": "ICMP",
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.apple.com",
+        "protocol": "UDP",
+        "mtu": 1500,
+        "ptb_seen": "No",
+        "exact_tcp": false
+      },
+      {
+        "domain": "www.apple.com",
+        "protocol": "TCP",
+        "mtu": 1488,
+        "mss": 1428,
+        "ptb_seen": "N/A",
+        "exact_tcp": false
+      }
+    ]
+  }
+]
