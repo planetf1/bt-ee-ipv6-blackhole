@@ -7,6 +7,7 @@ import time
 import logging
 import argparse
 import sys
+import struct
 from datetime import datetime
 
 # --- Restored IPv6-Capable Configuration ---
@@ -99,8 +100,10 @@ class UDPTester(MTUTester):
         sock = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
         try:
             if self.os_name == "linux":
+                # IPV6_MTU_DISCOVER = 23, IPV6_PMTUDISC_DO = 2
                 sock.setsockopt(socket.IPPROTO_IPV6, 23, 2)
             elif self.os_name == "darwin":
+                # IPV6_DONTFRAG = 62
                 sock.setsockopt(socket.IPPROTO_IPV6, 62, 1)
             sock.sendto(b"X" * payload_size, (ip, 33434))
             return True
@@ -109,31 +112,33 @@ class UDPTester(MTUTester):
         finally:
             sock.close()
 
-
 class TCPTester(MTUTester):
     def get_pmtu(self, ip, port=443):
         sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-        sock.settimeout(2.0)
+        sock.settimeout(2.5)
         try:
             sock.connect((ip, port))
             mss = sock.getsockopt(socket.IPPROTO_TCP, socket.TCP_MAXSEG)
 
             if self.os_name == "linux":
-                # 41 is IPPROTO_IPV6, 68 is IPV6_MTU on Linux
                 try:
-                    exact_mtu = sock.getsockopt(41, 68)
-                    return {"mss": mss, "mtu": exact_mtu, "exact": True}
-                except OSError:
-                    # Fallback if kernel rejects IPV6_MTU query
-                    return {"mss": mss, "mtu": mss + 60, "exact": False}
-            else:
-                # macOS Darwin fallback
-                return {"mss": mss, "mtu": mss + 60, "exact": False}
+                    # Verified for your Fedora kernel: offset 60 is tcpi_pmtu
+                    tcp_info_raw = sock.getsockopt(socket.IPPROTO_TCP, 11, 256)
+                    if len(tcp_info_raw) >= 64:
+                        kernel_pmtu = struct.unpack_from("I", tcp_info_raw, 60)[0]
+                        
+                        # Forensic verification: is it a valid IPv6 MTU?
+                        if 1280 <= kernel_pmtu <= 9000:
+                            return {"mss": mss, "mtu": kernel_pmtu, "exact": True}
+                except Exception as e:
+                    logging.debug(f"Linux TCP_INFO direct query failed: {e}")
+
+            # Fallback for macOS Darwin or failed Linux query
+            return {"mss": mss, "mtu": mss + 60, "exact": False}
         except Exception:
             return None
         finally:
             sock.close()
-
 
 def verify_ptb_missing(ip, tester, payload_size):
     interface = "any" if tester.os_name != "darwin" else "pktap,any"
@@ -206,7 +211,6 @@ def analyze_path(domain, tester, protocol_name, verify_ptb):
     min_payload, max_payload = tester.min_mtu - overhead, tester.max_mtu - overhead
     ptb_seen = "N/A"
 
-    # UDP specific logic - sniff max payload but do not binary search
     if protocol_name == "UDP":
         if verify_ptb:
             logging.info(
@@ -216,7 +220,7 @@ def analyze_path(domain, tester, protocol_name, verify_ptb):
             ptb_seen = "Yes" if ptb_res else "No"
             if ptb_res:
                 logging.warning(
-                    f"[{domain}] [{protocol_name}] FORENSIC: PTB seen! UDP packet was dropped by a router."
+                    f"[{domain}] [{protocol_name}] FORENSIC: PTB seen! Packet dropped by a router."
                 )
             else:
                 logging.info(
@@ -230,10 +234,10 @@ def analyze_path(domain, tester, protocol_name, verify_ptb):
             "protocol": protocol_name,
             "mtu": 1500,
             "ptb_seen": ptb_seen,
-            "exact_tcp": False,
+            "exact_tcp": True,
         }
 
-    # ICMP specific logic - complete active probing
+    # ICMP specific logic
     if not tester.test_size(ip, min_payload):
         logging.error(
             f"[{domain}] [{protocol_name}] Baseline {tester.min_mtu} dropped."
@@ -255,7 +259,7 @@ def analyze_path(domain, tester, protocol_name, verify_ptb):
             "protocol": protocol_name,
             "mtu": 1500,
             "ptb_seen": ptb_seen,
-            "exact_tcp": False,
+            "exact_tcp": True,
         }
 
     logging.warning(
@@ -350,7 +354,9 @@ def print_summary(results):
 
 
 def main():
+
     parser = argparse.ArgumentParser(description="Multi-Protocol MTU Forensics Tool V9")
+
     parser.add_argument(
         "--verify-ptb",
         action="store_true",
@@ -375,7 +381,7 @@ def main():
         sys.exit(1)
 
     setup_logging(args.log_file)
-    logging.info(f"Starting diagnostic routine V9 on {os_name.upper()}.")
+    logging.info(f"Starting diagnostic routine V9 on {os_name.upper()} ({platform.node()}).")
 
     scan_results = []
     testers = [

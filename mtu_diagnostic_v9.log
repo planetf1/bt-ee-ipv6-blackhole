@@ -1,179 +1,134 @@
-2026-03-12 07:36:33 | INFO    | Starting diagnostic routine V9 on DARWIN.
-2026-03-12 07:36:33 | INFO    | --- [ICMP] Probing api.x.ai ---
-2026-03-12 07:36:34 | INFO    | --- [UDP] Probing api.x.ai ---
-2026-03-12 07:36:38 | INFO    | --- [TCP] Probing api.x.ai ---
-2026-03-12 07:36:38 | INFO    | [api.x.ai] [TCP] Success: MSS 1348, MTU 1408 (Exact: False)
-2026-03-12 07:36:39 | INFO    | --- [ICMP] Probing huggingface.co ---
-2026-03-12 07:36:56 | INFO    | --- [UDP] Probing huggingface.co ---
-2026-03-12 07:36:59 | INFO    | --- [TCP] Probing huggingface.co ---
-2026-03-12 07:36:59 | INFO    | [huggingface.co] [TCP] Success: MSS 1328, MTU 1388 (Exact: False)
-2026-03-12 07:37:00 | INFO    | --- [ICMP] Probing cloud.google.com ---
-2026-03-12 07:37:18 | INFO    | --- [UDP] Probing cloud.google.com ---
-2026-03-12 07:37:21 | INFO    | --- [TCP] Probing cloud.google.com ---
-2026-03-12 07:37:21 | INFO    | [cloud.google.com] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:37:22 | INFO    | --- [ICMP] Probing aws.amazon.com ---
-2026-03-12 07:37:40 | INFO    | --- [UDP] Probing aws.amazon.com ---
-2026-03-12 07:37:43 | INFO    | --- [TCP] Probing aws.amazon.com ---
-2026-03-12 07:37:43 | INFO    | [aws.amazon.com] [TCP] Success: MSS 1328, MTU 1388 (Exact: False)
-2026-03-12 07:37:44 | INFO    | --- [ICMP] Probing registry-1.docker.io ---
-2026-03-12 07:37:46 | ERROR   | [registry-1.docker.io] [ICMP] Baseline 1280 dropped.
-2026-03-12 07:37:47 | INFO    | --- [UDP] Probing registry-1.docker.io ---
-2026-03-12 07:37:50 | INFO    | --- [TCP] Probing registry-1.docker.io ---
-2026-03-12 07:37:50 | INFO    | [registry-1.docker.io] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:37:51 | INFO    | --- [ICMP] Probing ipv6.he.net ---
-2026-03-12 07:37:53 | INFO    | --- [UDP] Probing ipv6.he.net ---
-2026-03-12 07:37:56 | INFO    | --- [TCP] Probing ipv6.he.net ---
-2026-03-12 07:37:57 | INFO    | [ipv6.he.net] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:37:58 | INFO    | --- [ICMP] Probing www.youtube.com ---
-2026-03-12 07:38:53 | INFO    | Starting diagnostic routine V9 on DARWIN.
-2026-03-12 07:38:53 | INFO    | --- [ICMP] Probing api.x.ai ---
-2026-03-12 07:38:53 | INFO    | [api.x.ai] [ICMP] 1500 byte packet succeeded immediately.
-2026-03-12 07:38:54 | INFO    | --- [UDP] Probing api.x.ai ---
-2026-03-12 07:38:54 | INFO    | [api.x.ai] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:38:57 | INFO    | [api.x.ai] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:38:58 | INFO    | --- [TCP] Probing api.x.ai ---
-2026-03-12 07:38:58 | INFO    | [api.x.ai] [TCP] Success: MSS 1348, MTU 1408 (Exact: False)
-2026-03-12 07:38:59 | INFO    | --- [ICMP] Probing huggingface.co ---
-2026-03-12 07:39:00 | WARNING | [huggingface.co] [ICMP] 1500 byte dropped. Calculating ceiling...
-2026-03-12 07:39:00 | INFO    | [huggingface.co] [ICMP] Sniffing for PTB messages...
-2026-03-12 07:39:04 | CRITICAL | [huggingface.co] [ICMP] FORENSIC: No PTB seen on wire.
-2026-03-12 07:39:15 | WARNING | [huggingface.co] [ICMP] Max size calculated at 1280 bytes.
-2026-03-12 07:39:16 | INFO    | --- [UDP] Probing huggingface.co ---
-2026-03-12 07:39:16 | INFO    | [huggingface.co] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:39:18 | INFO    | [huggingface.co] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:39:19 | INFO    | --- [TCP] Probing huggingface.co ---
-2026-03-12 07:39:19 | INFO    | [huggingface.co] [TCP] Success: MSS 1328, MTU 1388 (Exact: False)
-2026-03-12 07:39:20 | INFO    | --- [ICMP] Probing cloud.google.com ---
-2026-03-12 07:39:22 | WARNING | [cloud.google.com] [ICMP] 1500 byte dropped. Calculating ceiling...
-2026-03-12 07:39:22 | INFO    | [cloud.google.com] [ICMP] Sniffing for PTB messages...
-2026-03-12 07:39:26 | CRITICAL | [cloud.google.com] [ICMP] FORENSIC: No PTB seen on wire.
-2026-03-12 07:39:37 | WARNING | [cloud.google.com] [ICMP] Max size calculated at 1280 bytes.
-2026-03-12 07:39:38 | INFO    | --- [UDP] Probing cloud.google.com ---
-2026-03-12 07:39:38 | INFO    | [cloud.google.com] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:39:40 | INFO    | [cloud.google.com] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:39:41 | INFO    | --- [TCP] Probing cloud.google.com ---
-2026-03-12 07:39:41 | INFO    | [cloud.google.com] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:39:42 | INFO    | --- [ICMP] Probing aws.amazon.com ---
-2026-03-12 07:39:44 | WARNING | [aws.amazon.com] [ICMP] 1500 byte dropped. Calculating ceiling...
-2026-03-12 07:39:44 | INFO    | [aws.amazon.com] [ICMP] Sniffing for PTB messages...
-2026-03-12 07:39:48 | CRITICAL | [aws.amazon.com] [ICMP] FORENSIC: No PTB seen on wire.
-2026-03-12 07:39:59 | WARNING | [aws.amazon.com] [ICMP] Max size calculated at 1280 bytes.
-2026-03-12 07:40:00 | INFO    | --- [UDP] Probing aws.amazon.com ---
-2026-03-12 07:40:00 | INFO    | [aws.amazon.com] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:40:02 | INFO    | [aws.amazon.com] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:40:03 | INFO    | --- [TCP] Probing aws.amazon.com ---
-2026-03-12 07:40:03 | INFO    | [aws.amazon.com] [TCP] Success: MSS 1328, MTU 1388 (Exact: False)
-2026-03-12 07:40:04 | INFO    | --- [ICMP] Probing registry-1.docker.io ---
-2026-03-12 07:40:06 | ERROR   | [registry-1.docker.io] [ICMP] Baseline 1280 dropped.
-2026-03-12 07:40:07 | INFO    | --- [UDP] Probing registry-1.docker.io ---
-2026-03-12 07:40:07 | INFO    | [registry-1.docker.io] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:40:09 | INFO    | [registry-1.docker.io] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:40:10 | INFO    | --- [TCP] Probing registry-1.docker.io ---
-2026-03-12 07:40:10 | INFO    | [registry-1.docker.io] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:40:11 | INFO    | --- [ICMP] Probing ipv6.he.net ---
-2026-03-12 07:40:12 | INFO    | [ipv6.he.net] [ICMP] 1500 byte packet succeeded immediately.
-2026-03-12 07:40:13 | INFO    | --- [UDP] Probing ipv6.he.net ---
-2026-03-12 07:40:13 | INFO    | [ipv6.he.net] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:40:15 | INFO    | [ipv6.he.net] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:40:16 | INFO    | --- [TCP] Probing ipv6.he.net ---
-2026-03-12 07:40:16 | INFO    | [ipv6.he.net] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:40:17 | INFO    | --- [ICMP] Probing quay.io ---
-2026-03-12 07:40:19 | ERROR   | [quay.io] [ICMP] Baseline 1280 dropped.
-2026-03-12 07:40:20 | INFO    | --- [UDP] Probing quay.io ---
-2026-03-12 07:40:20 | INFO    | [quay.io] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:40:23 | INFO    | [quay.io] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:40:24 | INFO    | --- [TCP] Probing quay.io ---
-2026-03-12 07:40:24 | INFO    | [quay.io] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:40:25 | INFO    | --- [ICMP] Probing pypi.org ---
-2026-03-12 07:40:26 | WARNING | [pypi.org] [ICMP] 1500 byte dropped. Calculating ceiling...
-2026-03-12 07:40:26 | INFO    | [pypi.org] [ICMP] Sniffing for PTB messages...
-2026-03-12 07:40:30 | CRITICAL | [pypi.org] [ICMP] FORENSIC: No PTB seen on wire.
-2026-03-12 07:40:33 | WARNING | [pypi.org] [ICMP] Max size calculated at 1467 bytes.
-2026-03-12 07:40:34 | INFO    | --- [UDP] Probing pypi.org ---
-2026-03-12 07:40:34 | INFO    | [pypi.org] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:40:37 | INFO    | [pypi.org] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:40:38 | INFO    | --- [TCP] Probing pypi.org ---
-2026-03-12 07:40:38 | INFO    | [pypi.org] [TCP] Success: MSS 1408, MTU 1468 (Exact: False)
-2026-03-12 07:40:39 | INFO    | --- [ICMP] Probing repo1.maven.org ---
-2026-03-12 07:40:39 | INFO    | [repo1.maven.org] [ICMP] 1500 byte packet succeeded immediately.
-2026-03-12 07:40:40 | INFO    | --- [UDP] Probing repo1.maven.org ---
-2026-03-12 07:40:40 | INFO    | [repo1.maven.org] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:40:43 | INFO    | [repo1.maven.org] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:40:44 | INFO    | --- [TCP] Probing repo1.maven.org ---
-2026-03-12 07:40:44 | INFO    | [repo1.maven.org] [TCP] Success: MSS 1348, MTU 1408 (Exact: False)
-2026-03-12 07:40:45 | INFO    | --- [ICMP] Probing proxy.golang.org ---
-2026-03-12 07:40:46 | WARNING | [proxy.golang.org] [ICMP] 1500 byte dropped. Calculating ceiling...
-2026-03-12 07:40:46 | INFO    | [proxy.golang.org] [ICMP] Sniffing for PTB messages...
-2026-03-12 07:40:50 | CRITICAL | [proxy.golang.org] [ICMP] FORENSIC: No PTB seen on wire.
-2026-03-12 07:41:01 | WARNING | [proxy.golang.org] [ICMP] Max size calculated at 1280 bytes.
-2026-03-12 07:41:02 | INFO    | --- [UDP] Probing proxy.golang.org ---
-2026-03-12 07:41:02 | INFO    | [proxy.golang.org] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:41:04 | INFO    | [proxy.golang.org] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:41:05 | INFO    | --- [TCP] Probing proxy.golang.org ---
-2026-03-12 07:41:05 | INFO    | [proxy.golang.org] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:41:06 | INFO    | --- [ICMP] Probing crates.io ---
-2026-03-12 07:41:06 | INFO    | [crates.io] [ICMP] 1500 byte packet succeeded immediately.
-2026-03-12 07:41:07 | INFO    | --- [UDP] Probing crates.io ---
-2026-03-12 07:41:07 | INFO    | [crates.io] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:41:10 | INFO    | [crates.io] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:41:11 | INFO    | --- [TCP] Probing crates.io ---
-2026-03-12 07:41:11 | INFO    | [crates.io] [TCP] Success: MSS 1408, MTU 1468 (Exact: False)
-2026-03-12 07:41:12 | INFO    | --- [ICMP] Probing gitlab.com ---
-2026-03-12 07:41:12 | INFO    | [gitlab.com] [ICMP] 1500 byte packet succeeded immediately.
-2026-03-12 07:41:13 | INFO    | --- [UDP] Probing gitlab.com ---
-2026-03-12 07:41:13 | INFO    | [gitlab.com] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:41:16 | INFO    | [gitlab.com] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:41:17 | INFO    | --- [TCP] Probing gitlab.com ---
-2026-03-12 07:41:17 | INFO    | [gitlab.com] [TCP] Success: MSS 1348, MTU 1408 (Exact: False)
-2026-03-12 07:41:18 | INFO    | --- [ICMP] Probing www.youtube.com ---
-2026-03-12 07:41:19 | WARNING | [www.youtube.com] [ICMP] 1500 byte dropped. Calculating ceiling...
-2026-03-12 07:41:19 | INFO    | [www.youtube.com] [ICMP] Sniffing for PTB messages...
-2026-03-12 07:41:23 | CRITICAL | [www.youtube.com] [ICMP] FORENSIC: No PTB seen on wire.
-2026-03-12 07:41:34 | WARNING | [www.youtube.com] [ICMP] Max size calculated at 1280 bytes.
-2026-03-12 07:41:35 | INFO    | --- [UDP] Probing www.youtube.com ---
-2026-03-12 07:41:35 | INFO    | [www.youtube.com] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:41:37 | INFO    | [www.youtube.com] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:41:38 | INFO    | --- [TCP] Probing www.youtube.com ---
-2026-03-12 07:41:38 | INFO    | [www.youtube.com] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:41:39 | INFO    | --- [ICMP] Probing www.netflix.com ---
-2026-03-12 07:41:41 | ERROR   | [www.netflix.com] [ICMP] Baseline 1280 dropped.
-2026-03-12 07:41:42 | INFO    | --- [UDP] Probing www.netflix.com ---
-2026-03-12 07:41:42 | INFO    | [www.netflix.com] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:41:45 | INFO    | [www.netflix.com] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:41:46 | INFO    | --- [TCP] Probing www.netflix.com ---
-2026-03-12 07:41:46 | INFO    | [www.netflix.com] [TCP] Success: MSS 1420, MTU 1480 (Exact: False)
-2026-03-12 07:41:47 | INFO    | --- [ICMP] Probing www.wikipedia.org ---
-2026-03-12 07:41:48 | WARNING | [www.wikipedia.org] [ICMP] 1500 byte dropped. Calculating ceiling...
-2026-03-12 07:41:48 | INFO    | [www.wikipedia.org] [ICMP] Sniffing for PTB messages...
-2026-03-12 07:41:52 | CRITICAL | [www.wikipedia.org] [ICMP] FORENSIC: No PTB seen on wire.
-2026-03-12 07:42:03 | WARNING | [www.wikipedia.org] [ICMP] Max size calculated at 1280 bytes.
-2026-03-12 07:42:04 | INFO    | --- [UDP] Probing www.wikipedia.org ---
-2026-03-12 07:42:04 | INFO    | [www.wikipedia.org] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:42:06 | INFO    | [www.wikipedia.org] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:42:07 | INFO    | --- [TCP] Probing www.wikipedia.org ---
-2026-03-12 07:42:07 | INFO    | [www.wikipedia.org] [TCP] Success: MSS 1388, MTU 1448 (Exact: False)
-2026-03-12 07:42:08 | INFO    | --- [ICMP] Probing www.google.com ---
-2026-03-12 07:42:10 | WARNING | [www.google.com] [ICMP] 1500 byte dropped. Calculating ceiling...
-2026-03-12 07:42:10 | INFO    | [www.google.com] [ICMP] Sniffing for PTB messages...
-2026-03-12 07:42:14 | CRITICAL | [www.google.com] [ICMP] FORENSIC: No PTB seen on wire.
-2026-03-12 07:42:25 | WARNING | [www.google.com] [ICMP] Max size calculated at 1280 bytes.
-2026-03-12 07:42:26 | INFO    | --- [UDP] Probing www.google.com ---
-2026-03-12 07:42:26 | INFO    | [www.google.com] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:42:28 | INFO    | [www.google.com] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:42:29 | INFO    | --- [TCP] Probing www.google.com ---
-2026-03-12 07:42:29 | INFO    | [www.google.com] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:42:30 | INFO    | --- [ICMP] Probing cloudflare.com ---
-2026-03-12 07:42:30 | INFO    | [cloudflare.com] [ICMP] 1500 byte packet succeeded immediately.
-2026-03-12 07:42:31 | INFO    | --- [UDP] Probing cloudflare.com ---
-2026-03-12 07:42:31 | INFO    | [cloudflare.com] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:42:34 | INFO    | [cloudflare.com] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:42:35 | INFO    | --- [TCP] Probing cloudflare.com ---
-2026-03-12 07:42:35 | INFO    | [cloudflare.com] [TCP] Success: MSS 1348, MTU 1408 (Exact: False)
-2026-03-12 07:42:36 | INFO    | --- [ICMP] Probing www.apple.com ---
-2026-03-12 07:42:36 | INFO    | [www.apple.com] [ICMP] 1500 byte packet succeeded immediately.
-2026-03-12 07:42:37 | INFO    | --- [UDP] Probing www.apple.com ---
-2026-03-12 07:42:37 | INFO    | [www.apple.com] [UDP] Sniffing for PTB on 1500 byte probe...
-2026-03-12 07:42:40 | INFO    | [www.apple.com] [UDP] No PTB seen. Packet likely reached target.
-2026-03-12 07:42:41 | INFO    | --- [TCP] Probing www.apple.com ---
-2026-03-12 07:42:41 | INFO    | [www.apple.com] [TCP] Success: MSS 1428, MTU 1488 (Exact: False)
-2026-03-12 07:42:42 | INFO    | Telemetry successfully appended to mtu_history_v9.json
+2026-03-12 08:19:15 | INFO    | Starting diagnostic routine V9 on LINUX (fedora).
+2026-03-12 08:19:15 | INFO    | --- [ICMP] Probing api.x.ai ---
+2026-03-12 08:19:16 | INFO    | [api.x.ai] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:19:17 | INFO    | --- [UDP] Probing api.x.ai ---
+2026-03-12 08:19:17 | INFO    | [api.x.ai] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:19:19 | INFO    | [api.x.ai] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:19:20 | INFO    | --- [TCP] Probing api.x.ai ---
+2026-03-12 08:19:20 | INFO    | [api.x.ai] [TCP] Success: MSS 1348, MTU 1500 (Exact: True)
+2026-03-12 08:19:21 | INFO    | --- [ICMP] Probing huggingface.co ---
+2026-03-12 08:19:22 | WARNING | [huggingface.co] [ICMP] 1500 byte dropped. Calculating ceiling...
+2026-03-12 08:19:22 | INFO    | [huggingface.co] [ICMP] Sniffing for PTB messages...
+2026-03-12 08:19:26 | CRITICAL | [huggingface.co] [ICMP] FORENSIC: No PTB seen on wire.
+2026-03-12 08:19:30 | WARNING | [huggingface.co] [ICMP] Max size calculated at 1400 bytes.
+2026-03-12 08:19:31 | INFO    | --- [UDP] Probing huggingface.co ---
+2026-03-12 08:19:31 | INFO    | [huggingface.co] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:19:33 | INFO    | [huggingface.co] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:19:34 | INFO    | --- [TCP] Probing huggingface.co ---
+2026-03-12 08:19:34 | INFO    | [huggingface.co] [TCP] Success: MSS 1328, MTU 1500 (Exact: True)
+2026-03-12 08:19:35 | INFO    | --- [ICMP] Probing cloud.google.com ---
+2026-03-12 08:19:35 | INFO    | [cloud.google.com] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:19:36 | INFO    | --- [UDP] Probing cloud.google.com ---
+2026-03-12 08:19:36 | INFO    | [cloud.google.com] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:19:39 | INFO    | [cloud.google.com] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:19:40 | INFO    | --- [TCP] Probing cloud.google.com ---
+2026-03-12 08:19:40 | INFO    | [cloud.google.com] [TCP] Success: MSS 1428, MTU 1500 (Exact: True)
+2026-03-12 08:19:41 | INFO    | --- [ICMP] Probing aws.amazon.com ---
+2026-03-12 08:19:42 | WARNING | [aws.amazon.com] [ICMP] 1500 byte dropped. Calculating ceiling...
+2026-03-12 08:19:42 | INFO    | [aws.amazon.com] [ICMP] Sniffing for PTB messages...
+2026-03-12 08:19:45 | CRITICAL | [aws.amazon.com] [ICMP] FORENSIC: No PTB seen on wire.
+2026-03-12 08:19:50 | WARNING | [aws.amazon.com] [ICMP] Max size calculated at 1400 bytes.
+2026-03-12 08:19:51 | INFO    | --- [UDP] Probing aws.amazon.com ---
+2026-03-12 08:19:51 | INFO    | [aws.amazon.com] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:19:53 | INFO    | [aws.amazon.com] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:19:54 | INFO    | --- [TCP] Probing aws.amazon.com ---
+2026-03-12 08:19:54 | INFO    | [aws.amazon.com] [TCP] Success: MSS 1328, MTU 1500 (Exact: True)
+2026-03-12 08:19:55 | INFO    | --- [ICMP] Probing registry-1.docker.io ---
+2026-03-12 08:19:56 | ERROR   | [registry-1.docker.io] [ICMP] Baseline 1280 dropped.
+2026-03-12 08:19:57 | INFO    | --- [UDP] Probing registry-1.docker.io ---
+2026-03-12 08:19:57 | INFO    | [registry-1.docker.io] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:00 | INFO    | [registry-1.docker.io] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:01 | INFO    | --- [TCP] Probing registry-1.docker.io ---
+2026-03-12 08:20:01 | INFO    | [registry-1.docker.io] [TCP] Success: MSS 1428, MTU 1500 (Exact: True)
+2026-03-12 08:20:02 | INFO    | --- [ICMP] Probing ipv6.he.net ---
+2026-03-12 08:20:02 | INFO    | [ipv6.he.net] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:20:03 | INFO    | --- [UDP] Probing ipv6.he.net ---
+2026-03-12 08:20:03 | INFO    | [ipv6.he.net] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:06 | INFO    | [ipv6.he.net] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:07 | INFO    | --- [TCP] Probing ipv6.he.net ---
+2026-03-12 08:20:07 | INFO    | [ipv6.he.net] [TCP] Success: MSS 1428, MTU 1500 (Exact: True)
+2026-03-12 08:20:08 | INFO    | --- [ICMP] Probing quay.io ---
+2026-03-12 08:20:09 | ERROR   | [quay.io] [ICMP] Baseline 1280 dropped.
+2026-03-12 08:20:10 | INFO    | --- [UDP] Probing quay.io ---
+2026-03-12 08:20:10 | INFO    | [quay.io] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:12 | INFO    | [quay.io] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:13 | INFO    | --- [TCP] Probing quay.io ---
+2026-03-12 08:20:14 | INFO    | [quay.io] [TCP] Success: MSS 1428, MTU 1500 (Exact: True)
+2026-03-12 08:20:15 | INFO    | --- [ICMP] Probing pypi.org ---
+2026-03-12 08:20:15 | INFO    | [pypi.org] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:20:16 | INFO    | --- [UDP] Probing pypi.org ---
+2026-03-12 08:20:16 | INFO    | [pypi.org] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:18 | INFO    | [pypi.org] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:19 | INFO    | --- [TCP] Probing pypi.org ---
+2026-03-12 08:20:19 | INFO    | [pypi.org] [TCP] Success: MSS 1408, MTU 1500 (Exact: True)
+2026-03-12 08:20:20 | INFO    | --- [ICMP] Probing repo1.maven.org ---
+2026-03-12 08:20:20 | INFO    | [repo1.maven.org] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:20:21 | INFO    | --- [UDP] Probing repo1.maven.org ---
+2026-03-12 08:20:21 | INFO    | [repo1.maven.org] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:24 | INFO    | [repo1.maven.org] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:25 | INFO    | --- [TCP] Probing repo1.maven.org ---
+2026-03-12 08:20:25 | INFO    | [repo1.maven.org] [TCP] Success: MSS 1348, MTU 1500 (Exact: True)
+2026-03-12 08:20:26 | INFO    | --- [ICMP] Probing proxy.golang.org ---
+2026-03-12 08:20:26 | INFO    | [proxy.golang.org] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:20:27 | INFO    | --- [UDP] Probing proxy.golang.org ---
+2026-03-12 08:20:27 | INFO    | [proxy.golang.org] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:29 | INFO    | [proxy.golang.org] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:30 | INFO    | --- [TCP] Probing proxy.golang.org ---
+2026-03-12 08:20:30 | INFO    | [proxy.golang.org] [TCP] Success: MSS 1428, MTU 1500 (Exact: True)
+2026-03-12 08:20:31 | INFO    | --- [ICMP] Probing crates.io ---
+2026-03-12 08:20:31 | INFO    | [crates.io] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:20:32 | INFO    | --- [UDP] Probing crates.io ---
+2026-03-12 08:20:32 | INFO    | [crates.io] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:35 | INFO    | [crates.io] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:36 | INFO    | --- [TCP] Probing crates.io ---
+2026-03-12 08:20:36 | INFO    | [crates.io] [TCP] Success: MSS 1408, MTU 1500 (Exact: True)
+2026-03-12 08:20:37 | INFO    | --- [ICMP] Probing gitlab.com ---
+2026-03-12 08:20:37 | INFO    | [gitlab.com] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:20:38 | INFO    | --- [UDP] Probing gitlab.com ---
+2026-03-12 08:20:38 | INFO    | [gitlab.com] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:40 | INFO    | [gitlab.com] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:41 | INFO    | --- [TCP] Probing gitlab.com ---
+2026-03-12 08:20:41 | INFO    | [gitlab.com] [TCP] Success: MSS 1348, MTU 1500 (Exact: True)
+2026-03-12 08:20:42 | INFO    | --- [ICMP] Probing www.youtube.com ---
+2026-03-12 08:20:42 | INFO    | [www.youtube.com] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:20:43 | INFO    | --- [UDP] Probing www.youtube.com ---
+2026-03-12 08:20:43 | INFO    | [www.youtube.com] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:46 | INFO    | [www.youtube.com] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:47 | INFO    | --- [TCP] Probing www.youtube.com ---
+2026-03-12 08:20:47 | INFO    | [www.youtube.com] [TCP] Success: MSS 1428, MTU 1500 (Exact: True)
+2026-03-12 08:20:48 | INFO    | --- [ICMP] Probing www.netflix.com ---
+2026-03-12 08:20:48 | INFO    | [www.netflix.com] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:20:49 | INFO    | --- [UDP] Probing www.netflix.com ---
+2026-03-12 08:20:49 | INFO    | [www.netflix.com] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:52 | INFO    | [www.netflix.com] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:53 | INFO    | --- [TCP] Probing www.netflix.com ---
+2026-03-12 08:20:53 | INFO    | [www.netflix.com] [TCP] Success: MSS 1428, MTU 1500 (Exact: True)
+2026-03-12 08:20:54 | INFO    | --- [ICMP] Probing www.wikipedia.org ---
+2026-03-12 08:20:54 | INFO    | [www.wikipedia.org] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:20:55 | INFO    | --- [UDP] Probing www.wikipedia.org ---
+2026-03-12 08:20:55 | INFO    | [www.wikipedia.org] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:20:57 | INFO    | [www.wikipedia.org] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:20:58 | INFO    | --- [TCP] Probing www.wikipedia.org ---
+2026-03-12 08:20:58 | INFO    | [www.wikipedia.org] [TCP] Success: MSS 1388, MTU 1500 (Exact: True)
+2026-03-12 08:20:59 | INFO    | --- [ICMP] Probing www.google.com ---
+2026-03-12 08:20:59 | INFO    | [www.google.com] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:21:00 | INFO    | --- [UDP] Probing www.google.com ---
+2026-03-12 08:21:00 | INFO    | [www.google.com] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:21:03 | INFO    | [www.google.com] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:21:04 | INFO    | --- [TCP] Probing www.google.com ---
+2026-03-12 08:21:04 | INFO    | [www.google.com] [TCP] Success: MSS 1428, MTU 1500 (Exact: True)
+2026-03-12 08:21:05 | INFO    | --- [ICMP] Probing cloudflare.com ---
+2026-03-12 08:21:05 | INFO    | [cloudflare.com] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:21:06 | INFO    | --- [UDP] Probing cloudflare.com ---
+2026-03-12 08:21:06 | INFO    | [cloudflare.com] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:21:08 | INFO    | [cloudflare.com] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:21:09 | INFO    | --- [TCP] Probing cloudflare.com ---
+2026-03-12 08:21:09 | INFO    | [cloudflare.com] [TCP] Success: MSS 1348, MTU 1500 (Exact: True)
+2026-03-12 08:21:10 | INFO    | --- [ICMP] Probing www.apple.com ---
+2026-03-12 08:21:11 | INFO    | [www.apple.com] [ICMP] 1500 byte packet succeeded immediately.
+2026-03-12 08:21:12 | INFO    | --- [UDP] Probing www.apple.com ---
+2026-03-12 08:21:12 | INFO    | [www.apple.com] [UDP] Sniffing for PTB on 1500 byte probe...
+2026-03-12 08:21:14 | INFO    | [www.apple.com] [UDP] No PTB seen. Packet likely reached target.
+2026-03-12 08:21:15 | INFO    | --- [TCP] Probing www.apple.com ---
+2026-03-12 08:21:15 | INFO    | [www.apple.com] [TCP] Success: MSS 1428, MTU 1500 (Exact: True)
+2026-03-12 08:21:16 | INFO    | Telemetry successfully appended to mtu_history_v9.json

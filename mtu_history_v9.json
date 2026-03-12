@@ -1,35 +1,35 @@
 [
   {
-    "timestamp": "2026-03-12 07:42:42",
-    "os": "darwin",
-    "hostname": "macbook.cherrybyte.me.uk",
+    "timestamp": "2026-03-12 08:21:16",
+    "os": "linux",
+    "hostname": "fedora",
     "results": [
       {
         "domain": "api.x.ai",
         "protocol": "ICMP",
         "mtu": 1500,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "api.x.ai",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "api.x.ai",
         "protocol": "TCP",
-        "mtu": 1408,
+        "mtu": 1500,
         "mss": 1348,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "huggingface.co",
         "protocol": "ICMP",
-        "mtu": 1280,
+        "mtu": 1400,
         "ptb_seen": "No",
         "exact_tcp": false
       },
@@ -38,42 +38,42 @@
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "huggingface.co",
         "protocol": "TCP",
-        "mtu": 1388,
+        "mtu": 1500,
         "mss": 1328,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "cloud.google.com",
         "protocol": "ICMP",
-        "mtu": 1280,
-        "ptb_seen": "No",
-        "exact_tcp": false
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": true
       },
       {
         "domain": "cloud.google.com",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "cloud.google.com",
         "protocol": "TCP",
-        "mtu": 1488,
+        "mtu": 1500,
         "mss": 1428,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "aws.amazon.com",
         "protocol": "ICMP",
-        "mtu": 1280,
+        "mtu": 1400,
         "ptb_seen": "No",
         "exact_tcp": false
       },
@@ -82,15 +82,15 @@
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "aws.amazon.com",
         "protocol": "TCP",
-        "mtu": 1388,
+        "mtu": 1500,
         "mss": 1328,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "registry-1.docker.io",
@@ -104,37 +104,37 @@
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "registry-1.docker.io",
         "protocol": "TCP",
-        "mtu": 1488,
+        "mtu": 1500,
         "mss": 1428,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "ipv6.he.net",
         "protocol": "ICMP",
         "mtu": 1500,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "ipv6.he.net",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "ipv6.he.net",
         "protocol": "TCP",
-        "mtu": 1488,
+        "mtu": 1500,
         "mss": 1428,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "quay.io",
@@ -148,257 +148,257 @@
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "quay.io",
         "protocol": "TCP",
-        "mtu": 1488,
+        "mtu": 1500,
         "mss": 1428,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "pypi.org",
         "protocol": "ICMP",
-        "mtu": 1467,
-        "ptb_seen": "No",
-        "exact_tcp": false
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": true
       },
       {
         "domain": "pypi.org",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "pypi.org",
         "protocol": "TCP",
-        "mtu": 1468,
+        "mtu": 1500,
         "mss": 1408,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "repo1.maven.org",
         "protocol": "ICMP",
         "mtu": 1500,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "repo1.maven.org",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "repo1.maven.org",
         "protocol": "TCP",
-        "mtu": 1408,
+        "mtu": 1500,
         "mss": 1348,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "proxy.golang.org",
         "protocol": "ICMP",
-        "mtu": 1280,
-        "ptb_seen": "No",
-        "exact_tcp": false
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": true
       },
       {
         "domain": "proxy.golang.org",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "proxy.golang.org",
         "protocol": "TCP",
-        "mtu": 1488,
+        "mtu": 1500,
         "mss": 1428,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "crates.io",
         "protocol": "ICMP",
         "mtu": 1500,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "crates.io",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "crates.io",
         "protocol": "TCP",
-        "mtu": 1468,
+        "mtu": 1500,
         "mss": 1408,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "gitlab.com",
         "protocol": "ICMP",
         "mtu": 1500,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "gitlab.com",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "gitlab.com",
         "protocol": "TCP",
-        "mtu": 1408,
+        "mtu": 1500,
         "mss": 1348,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.youtube.com",
         "protocol": "ICMP",
-        "mtu": 1280,
-        "ptb_seen": "No",
-        "exact_tcp": false
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": true
       },
       {
         "domain": "www.youtube.com",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.youtube.com",
         "protocol": "TCP",
-        "mtu": 1488,
+        "mtu": 1500,
         "mss": 1428,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.netflix.com",
         "protocol": "ICMP",
-        "mtu": "Blocked",
+        "mtu": 1500,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.netflix.com",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.netflix.com",
         "protocol": "TCP",
-        "mtu": 1480,
-        "mss": 1420,
+        "mtu": 1500,
+        "mss": 1428,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.wikipedia.org",
         "protocol": "ICMP",
-        "mtu": 1280,
-        "ptb_seen": "No",
-        "exact_tcp": false
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": true
       },
       {
         "domain": "www.wikipedia.org",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.wikipedia.org",
         "protocol": "TCP",
-        "mtu": 1448,
+        "mtu": 1500,
         "mss": 1388,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.google.com",
         "protocol": "ICMP",
-        "mtu": 1280,
-        "ptb_seen": "No",
-        "exact_tcp": false
+        "mtu": 1500,
+        "ptb_seen": "N/A",
+        "exact_tcp": true
       },
       {
         "domain": "www.google.com",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.google.com",
         "protocol": "TCP",
-        "mtu": 1488,
+        "mtu": 1500,
         "mss": 1428,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "cloudflare.com",
         "protocol": "ICMP",
         "mtu": 1500,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "cloudflare.com",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "cloudflare.com",
         "protocol": "TCP",
-        "mtu": 1408,
+        "mtu": 1500,
         "mss": 1348,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.apple.com",
         "protocol": "ICMP",
         "mtu": 1500,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.apple.com",
         "protocol": "UDP",
         "mtu": 1500,
         "ptb_seen": "No",
-        "exact_tcp": false
+        "exact_tcp": true
       },
       {
         "domain": "www.apple.com",
         "protocol": "TCP",
-        "mtu": 1488,
+        "mtu": 1500,
         "mss": 1428,
         "ptb_seen": "N/A",
-        "exact_tcp": false
+        "exact_tcp": true
       }
     ]
   }
