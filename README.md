@@ -15,9 +15,11 @@ This repository is now archived. The original README has been moved to ARCHIVE_R
 - Example commands and output for each OS are included below.
 - Some v9 script bugs were found and fixed, but the core issue is resolved.
 
+
 #### Example: FreeBSD/macOS
 ```sh
 sudo ping6 -v -D -c 50 -s 1452 mtu1280.test-ipv6.com
+```
 ```
 Output (truncated):
 1240 bytes from 2600:3c0e:e001:d1::6666: Packet too big mtu = 1280
@@ -27,6 +29,7 @@ ICMP6: type = 128, code = 0
 #### Example: Linux
 ```sh
 ping6 mtu1280.test-ipv6.com -Mdo -v -c 50 -s 1452
+```
 ```
 Output (truncated):
 From 2600:3c0e:e001:d1::6666 icmp_seq=1 Packet too big: mtu=1280
@@ -47,7 +50,14 @@ ping6: sendmsg: Message too long
 
 ---
 
+
 **This repository is now archived and read-only.**
+
+---
+
+### Thanks
+
+Special thanks to the BT/EE engineering staff for their investigation and confirmation of correct P2B/PMTUD behavior.
 
 ---
 
